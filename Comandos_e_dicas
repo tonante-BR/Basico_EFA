@@ -1,0 +1,127 @@
+=============================================================
+
+Analise Fatorial Exploratoria
+
+Pacotes essenciais
+psych
+lavaan
+GPArotation
+
+Carregar pacotes
+library(pacote que vc quer)
+library(psych)
+
+Criar matrix correlacao
+
+afematrix <- cor(AFE)
+> model1 <- principal(afematrix, nfactors = 3, rotate = "promax")
+> summary (model1)
+
+#Primeiro a Importar base (AFE)
+
+Data screening - Ver se ta td preenchido, se tem missing
+#Excluir missing values - Exclui a linha toda, ou seja,
+o sujeito.
+nomissing = na.omit(nome do objeto)
+Exempolo: nomissing = na.omit(AFE)
+
+A base de dados nova agora é a nomissing
+Alterar nomissing para AFE2
+afe2 = nomissing
+
+Se tiver que excluir alguma coluna
+afe2 = nomissing [,-ncol(nomissing)]
+seria todas colunas - a coluna que quer tirar
+
+----------------------------------------
+#Numero de fatores
+
+Screeplot
+
+scree(nome do objeto)
+Exemplo: scree(afe2)
+
+Vai geral um grafico, observar o grafico
+PC = componentes principais
+FA = analise fatorial
+
+Análise paralela
+
+fa.parallel(nome do obejto, fm="ml"max.likehood, fa="fa"factorial analysis, aqui
+pode ser pc, principal components)
+
+Exemplo: fa.parallel(afe2, fm="ml", fa="fa")
+
+Vai geral um grafico, observar o grafico
+Na saida é sugerido o numero de componentes
+
+fa.diagram(fa(afe2, cor="poly"), cut=.2)
+
+###Criterio de Kaiser (eigenvalues)
+parallel$fa.values
+
+Vai mostrar os eigenvalues dai pensar no critério 
+teorio acima de 1,1.5,2,0.7
+
+#Rodar
+dar um nome: doisfatores, comando para analise fatorial: fa
+colocar o nome da base que ficou por ultimo
+definir a rotação 
+
+Exemplo: doisfatores = fa(afe2, nfactors=2, rotate = "oblimin", fm = "ml")
+summary (doisfatores)
+### digitar o nome do objeto novo e rodar para aparecer os loadings
+doisfatores 
+
+
+Olhar a matriz padronizada (standardized loadings - pattern matrix)
+
+ML são compomentes
+h2 é o r ao quadrado
+u2 é a carga
+com = comunalidades
+
+Inspecionar itens com cargas baixas e com duplo carregamento
+Para facilitar é bom copiar a matriz para o excell para verificar isso
+
+Identificados os itens problematicos, rodar novamente excluindo
+esses itens
+
+#nomear com um novo nome para facilitar as coisas
+e depois do nome do objeto adicionar
+[,-c(itens que quer excluir)
+
+exemplo: 
+doisfatores2 = fa(afe2[,=c(3,5,6)], nfactors=2, rotate = "oblimin", fm = "ml")
+
+#Novamente,inspecionar itens com cargas baixas e com duplo carregamento
+Para facilitar é bom copiar a matriz para o excell para verificar isso
+
+--------------------------------------------------------
+Calcular alpha e lambda
+
+Calcular por fator
+#criar novo objeto, por exemplo fator 1 e colocar os itens
+
+fator1 = 1,2,12,14,18
+fator2 = 3,11,15,16
+exemplo para calcular para o fator 1
+
+alpha(afe2[ , c(1,2,12,14,18)])
+
+
+---------------------------------------------------------
+
+#AFE
+scree(atualsm)
+fa.parallel(atualsm, fm="ml", fa="pc")
+fa.parallel(atualsm, fm="ml", fa="fa")
+afematrix <- cor(atualsm)
+alpha(afematrix)
+quatrofatores = fa(atualsm, nfactors=4, rotate = "varimax", fm = "ml")
+summary(quatrofatores)
+summary(afematrix)
+mod4f <- factanal(atualsm, factors=4, rotation="varimax")
+summary(mod4f)
+quatrofatores
+mod4f
